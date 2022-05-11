@@ -1,9 +1,11 @@
+import { Container, Button } from '@chakra-ui/react';
 
 function App() {
   return (
-    <div>
+    <Container maxW='1100px'>
       <h1>Recovery Crypto Management</h1>
-    </div>
+      <Button colorScheme='blue'>Get Started</Button>
+    </Container>
   );
 }
 
