@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Button } from "@chakra-ui/core";
+import { Box } from "@chakra-ui/core";
+
+import Home from './pages/Home';
 
 function App() {
   return (
     <Box p={4}>
-      <h1>Recovery Crypto Management</h1>
-      <Button colorScheme='blue'>Get Started</Button>
+      <Home />
     </Box>
   );
 }
