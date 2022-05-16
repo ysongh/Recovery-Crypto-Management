@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from "@chakra-ui/core";
+import { Container, Button } from '@mui/material';
 import Web3 from 'web3';
 import { Contract, Web3Provider, Provider } from "zksync-web3";
 import { ethers } from "ethers";
@@ -58,13 +58,17 @@ function Home() {
   }
 
   return (
-    <div>
+    <Container maxWidth="lg">
       <h1>Recovery Crypto Management</h1>
       <p>ETH Address: {ethAddress}</p>
       <p>Balance: {ethBalance} ETH</p>
-      <Button colorScheme='blue' onClick={connectCoinbaseWallet}>Get Started</Button>
-      <Button colorScheme='blue' onClick={connectMetaMask}>Connect Wallet</Button>
-    </div>
+      <Button variant="contained" onClick={connectCoinbaseWallet}>
+        Get Started
+      </Button>
+      <Button variant="contained" onClick={connectMetaMask}>
+        Connect Wallet
+      </Button>
+    </Container>
   )
 }
 
