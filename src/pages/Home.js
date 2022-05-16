@@ -14,6 +14,8 @@ function Home() {
   const [ethAddress, setEthAddress] = useState("");
   const [ethBalance, setETHBalance] = useState("");
   const [rsContract, setRSContract] = useState(""); 
+  const [text, setText] = useState("");
+  const [newText, setNewText] = useState("");
 
   const connectCoinbaseWallet = () => {
     const ethereum = connectCB();
@@ -57,6 +59,35 @@ function Home() {
       .catch((e) => console.log(e)); 
   }
 
+  const getGreetingList = async () => {
+    const data = await rsContract.getGreeting("0");
+    console.log(data);
+    setText(data);
+  }
+
+  const createGreeting = async () => {
+    const txHandle = await rsContract.createGreetContract("Hello", {
+      customData: {
+        // Passing the token to pay fee with
+        feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      },
+    });
+
+    await txHandle.wait();
+  }
+
+  const setGreeting = async () => {
+    const txHandle = await rsContract.setGreeting("0", newText, {
+      customData: {
+        // Passing the token to pay fee with
+        feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      },
+    });
+
+    await txHandle.wait();
+    await getGreetingList();
+  }
+
   return (
     <Container maxWidth="lg">
       <h1>Recovery Crypto Management</h1>
@@ -68,6 +99,25 @@ function Home() {
       <Button variant="contained" onClick={connectMetaMask}>
         Connect Wallet
       </Button>
+      <br />
+      <br />
+      {rsContract && (
+        <>
+          <Button variant="contained" onClick={getGreetingList}>
+            Get Greeting
+          </Button>
+          <Button variant="contained" onClick={createGreeting}>
+            Create Greeting
+          </Button>
+          <br />
+          <br />
+          <input value={newText} onChange={(e) => setNewText(e.target.value)} />
+          <Button variant="contained" onClick={setGreeting}>
+            Set Greeting
+          </Button>
+        </>
+      )}
+      <p>{text}</p>
     </Container>
   )
 }
