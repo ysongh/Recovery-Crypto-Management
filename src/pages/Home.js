@@ -12,7 +12,8 @@ const GREETER_CONTRACT_ABI = RecoverableSafeFactory.abi;
 
 function Home() {
   const [ethAddress, setEthAddress] = useState("");
-  console.log(GREETER_CONTRACT_ABI)
+  const [ethBalance, setETHBalance] = useState("");
+  const [rsContract, setRSContract] = useState(""); 
 
   const connectCoinbaseWallet = () => {
     const ethereum = connectCB();
@@ -32,7 +33,7 @@ function Home() {
 
   const connectMetaMask = async () => {
     window.ethereum.request({ method: 'eth_requestAccounts' })
-      .then(() => {
+      .then(async () => {
         if (+window.ethereum.networkVersion == 280) {
           const provider = new Provider('https://zksync2-testnet.zksync.dev');
     
@@ -44,8 +45,11 @@ function Home() {
               GREETER_CONTRACT_ABI,
               signer
           );
+          setRSContract(contract);
 
-          console.log(provider, contract);
+          const balanceInUnits = await signer.getBalance("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+          const balance = ethers.utils.formatUnits(balanceInUnits, "18");
+          setETHBalance(balance);
         } else {
           alert("Please switch network to zkSync!");
         }
@@ -57,6 +61,7 @@ function Home() {
     <div>
       <h1>Recovery Crypto Management</h1>
       <p>ETH Address: {ethAddress}</p>
+      <p>Balance: {ethBalance} ETH</p>
       <Button colorScheme='blue' onClick={connectCoinbaseWallet}>Get Started</Button>
       <Button colorScheme='blue' onClick={connectMetaMask}>Connect Wallet</Button>
     </div>
