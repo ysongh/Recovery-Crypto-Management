@@ -23,4 +23,10 @@ contract RecoverableSafeFactory {
         address payable safeAddress = payable(address(recoverableSafeList[_id]));
         payable(safeAddress).transfer(msg.value);
     }
+
+    function withdrawETHfromSafe(uint _id, uint _amount) public {
+        address payable safeAddress = payable(address(recoverableSafeList[_id]));
+        RecoverableSafe safe = RecoverableSafe(safeAddress);
+        safe.withdrawETHfromSafe(_amount);
+    }
 }

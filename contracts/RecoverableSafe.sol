@@ -15,4 +15,8 @@ contract RecoverableSafe {
     function getETHBalance() public view returns (uint) {
         return address(this).balance;
     }
+
+    function withdrawETHfromSafe(uint _amount) public {
+        payable(owner).transfer(_amount);
+    }
 }
