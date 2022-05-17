@@ -2,17 +2,17 @@
 pragma solidity ^0.8.0;
 
 contract RecoverableSafe {
-    string private greeting;
+    address public owner;
 
-    constructor(string memory _greeting) {
-        greeting = _greeting;
+    constructor(address _owner) {
+        owner = _owner;
     }
 
-    function greet() public view returns (string memory) {
-        return greeting;
-    }
+    // receive money
+    fallback() external payable {}
+    receive() external payable {}
 
-    function setGreeting(string memory _greeting) public {
-        greeting = _greeting;
+    function getETHBalance() public view returns (uint) {
+        return address(this).balance;
     }
 }

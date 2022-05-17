@@ -4,22 +4,23 @@ pragma solidity ^0.8.0;
 import "./RecoverableSafe.sol";
 
 contract RecoverableSafeFactory {
-    RecoverableSafe[] public recoverableSafeList;
+    RecoverableSafe[] public recoverableSafeList ;
 
     constructor() {}
 
-    function createGreetContract(string memory _text) public {
-        RecoverableSafe newContract = new RecoverableSafe(_text);
-        recoverableSafeList.push(newContract);
+    function createRecoverableSafe() public {
+        RecoverableSafe newSafe = new RecoverableSafe(msg.sender);
+        recoverableSafeList.push(newSafe);
     }
 
-    function getGreeting(uint _id) public view returns (string memory) {
-        RecoverableSafe currentContract = RecoverableSafe(address(recoverableSafeList[_id]));
-        return currentContract.greet();
+    function getETHBalance(uint _id) public view returns (uint) {
+        address payable safeAddress = payable(address(recoverableSafeList[_id]));
+        RecoverableSafe safe = RecoverableSafe(safeAddress);
+        return safe.getETHBalance();
     }
 
-    function setGreeting(uint _id, string memory _greeting) public {
-        RecoverableSafe currentContract = RecoverableSafe(address(recoverableSafeList[_id]));
-        currentContract.setGreeting(_greeting);
+    function depositETHToSafe(uint _id) public payable {
+        address payable safeAddress = payable(address(recoverableSafeList[_id]));
+        payable(safeAddress).transfer(msg.value);
     }
 }
