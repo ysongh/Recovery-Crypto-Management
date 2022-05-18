@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 contract RecoverableSafe {
     address public owner;
 
@@ -8,15 +10,17 @@ contract RecoverableSafe {
         owner = _owner;
     }
 
-    // receive money
-    fallback() external payable {}
-    receive() external payable {}
-
     function getETHBalance() public view returns (uint) {
         return address(this).balance;
     }
 
-    function withdrawETHfromSafe(uint _amount) public {
-        payable(owner).transfer(_amount);
+    // function depositTokenToSafe(uint _tokenAmount, address _tokenAddress) public {
+    //     IERC20 token = IERC20(_tokenAddress);
+    //     token.transferFrom(msg.sender, address(this), _tokenAmount);
+    // }
+
+    function withdrawTokenfromSafe(uint _tokenAmount, address _tokenAddress) public {
+        IERC20 token = IERC20(_tokenAddress);
+        require(token.transfer(msg.sender, _tokenAmount), "Unable to transfer");    
     }
 }
