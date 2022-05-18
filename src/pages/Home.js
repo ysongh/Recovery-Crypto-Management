@@ -7,15 +7,15 @@ import { ethers } from "ethers";
 import RecoverableSafeFactory from '../artifacts-zk/contracts/RecoverableSafeFactory.sol/RecoverableSafeFactory.json';
 import { connectCB } from '../config/coinbase-wallet';
 
-const GREETER_CONTRACT_ADDRESS = "0x3D63e9B9269f937e8C1D372E01AB29Ee48c9d111";
-const GREETER_CONTRACT_ABI = RecoverableSafeFactory.abi;
+const RSF_CONTRACT_ADDRESS = "0x86498B8C456454305ED75f9C87e5687FC6B95CA9";
+const RSF_CONTRACT_ABI = RecoverableSafeFactory.abi;
 
 function Home() {
   const [ethAddress, setEthAddress] = useState("");
   const [ethBalance, setETHBalance] = useState("");
+  const [safeETHBalance, setSafeETHBalance] = useState(0);
   const [rsContract, setRSContract] = useState(""); 
-  const [text, setText] = useState("");
-  const [newText, setNewText] = useState("");
+  const [depositAmount, setDepositAmount] = useState(0);
 
   const connectCoinbaseWallet = () => {
     const ethereum = connectCB();
@@ -43,9 +43,9 @@ function Home() {
           const signer = (new Web3Provider(window.ethereum)).getSigner();
 
           const contract = new Contract(
-              GREETER_CONTRACT_ADDRESS,
-              GREETER_CONTRACT_ABI,
-              signer
+            RSF_CONTRACT_ADDRESS,
+            RSF_CONTRACT_ABI,
+            signer
           );
           setRSContract(contract);
 
@@ -59,14 +59,14 @@ function Home() {
       .catch((e) => console.log(e)); 
   }
 
-  const getGreetingList = async () => {
-    const data = await rsContract.getGreeting("0");
-    console.log(data);
-    setText(data);
+  const getBalance = async () => {
+    const balance = await rsContract.getETHBalance("0");
+    console.log(balance);
+    setSafeETHBalance(balance.toString());
   }
 
-  const createGreeting = async () => {
-    const txHandle = await rsContract.createGreetContract("Hello", {
+  const createSafe = async () => {
+    const txHandle = await rsContract.createRecoverableSafe({
       customData: {
         // Passing the token to pay fee with
         feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
@@ -76,16 +76,23 @@ function Home() {
     await txHandle.wait();
   }
 
-  const setGreeting = async () => {
-    const txHandle = await rsContract.setGreeting("0", newText, {
-      customData: {
-        // Passing the token to pay fee with
-        feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      },
-    });
-
-    await txHandle.wait();
-    await getGreetingList();
+  const depositETH = async () => {
+    try {
+      const txHandle = await rsContract.depositETHToSafe("0", {
+        customData: {
+          // Passing the token to pay fee with
+          feeToken: "0x5C221E77624690fff6dd741493D735a17716c26B",
+          value: depositAmount
+        },
+      });
+  
+      await txHandle.wait();
+      await getBalance();
+    }
+    catch(error) {
+      console.error(error);
+      console.log(error.transaction.value.toString());
+    }
   }
 
   return (
@@ -103,21 +110,21 @@ function Home() {
       <br />
       {rsContract && (
         <>
-          <Button variant="contained" onClick={getGreetingList}>
-            Get Greeting
+          <Button variant="contained" onClick={getBalance}>
+            Get balance
           </Button>
-          <Button variant="contained" onClick={createGreeting}>
-            Create Greeting
+          <Button variant="contained" onClick={createSafe}>
+            Create Safe
           </Button>
           <br />
           <br />
-          <input value={newText} onChange={(e) => setNewText(e.target.value)} />
-          <Button variant="contained" onClick={setGreeting}>
-            Set Greeting
+          <p>Safe ETH balance: {safeETHBalance}</p>
+          <input value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} />
+          <Button variant="contained" onClick={depositETH}>
+            Deposit
           </Button>
         </>
       )}
-      <p>{text}</p>
     </Container>
   )
 }

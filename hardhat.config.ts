@@ -16,6 +16,7 @@ module.exports = {
       },
     },
   },
+  // yarn hardhat deploy-zksync
   zkSyncDeploy: {
     zkSyncNetwork: "https://zksync2-testnet.zksync.dev",
     ethNetwork: process.env.ALCHEMY_API, // Can also be the RPC URL of the network (e.g. `https://goerli.infura.io/v3/<API_KEY>`)
