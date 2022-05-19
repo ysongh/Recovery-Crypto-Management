@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Button } from '@mui/material';
+import { Box, Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, ListItem, ListItemText, ListItemButton, Button } from '@mui/material';
 import { Provider } from "zksync-web3";
 import { ethers } from "ethers";
 
 import WalletTable from './safe-dashboard/WalletTable';
 
 const provider = new Provider('https://zksync2-testnet.zksync.dev');
-
+const drawerWidth = 200;
 const TOKEN_ADDRESSES = [
   {
     address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
@@ -26,7 +26,7 @@ const TOKEN_ADDRESSES = [
   }
 ];
 
-function SafeDashboard({ ethAddress, rsContract, ethBalance, userSigner }) {
+function SafeDashboard({ rsContract, ethAddress, userSigner }) {
   const [safeETHBalance, setSafeETHBalance] = useState(0);
   const [depositAmount, setDepositAmount] = useState(0);
   const [withdrawAmount, setWithdrawAmount] = useState(0);
@@ -101,32 +101,72 @@ function SafeDashboard({ ethAddress, rsContract, ethBalance, userSigner }) {
   }
 
   return (
-    <Container maxWidth="lg">
-      <p>ETH Address: {ethAddress}</p>
-      <p>Balance: {ethBalance} ETH</p>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+            Recovery Crypto Management
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Toolbar />
+        <Divider />
+        <List>
+          {['Your Wallet', 'Your Safe'].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+      >
+        <Toolbar />
+        <p>ETH Address: {ethAddress}</p>
 
-      <WalletTable
-        userAssets={userAssets} />
+        <WalletTable
+          userAssets={userAssets} />
 
-      <Button variant="contained" onClick={getBalance}>
-        Get balance
-      </Button>
-      <Button variant="contained" onClick={createSafe}>
-        Create Safe
-      </Button>
-      <br />
-      <br />
-      <p>Safe ETH balance: {safeETHBalance}</p>
-      <input value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} />
-      <Button variant="contained" onClick={depositToSafe}>
-        Deposit
-      </Button>
-      <br />
-      <input value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} />
-      <Button variant="contained" onClick={withdrawToken}>
-        WithDraw
-      </Button>
-    </Container>
+        <Button variant="contained" onClick={getBalance}>
+          Get balance
+        </Button>
+        <Button variant="contained" onClick={createSafe}>
+          Create Safe
+        </Button>
+        <br />
+        <br />
+        <p>Safe ETH balance: {safeETHBalance}</p>
+        <input value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} />
+        <Button variant="contained" onClick={depositToSafe}>
+          Deposit
+        </Button>
+        <br />
+        <input value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} />
+        <Button variant="contained" onClick={withdrawToken}>
+          WithDraw
+        </Button>
+      </Box>
+    </Box>
   )
 }
 

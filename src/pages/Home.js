@@ -11,7 +11,7 @@ import { connectCB } from '../config/coinbase-wallet';
 const RSF_CONTRACT_ADDRESS = "0x63b3F646e124F161AC3ff9C7AA4E35a8a3F733A4";
 const RSF_CONTRACT_ABI = RecoverableSafeFactory.abi;
 
-function Home({ setRSContract, setUserSigner, setETHBalance, setEthAddress }) {
+function Home({ setRSContract, setUserSigner, setEthAddress }) {
   const navigate = useNavigate();
 
   const connectCoinbaseWallet = () => {
@@ -45,9 +45,8 @@ function Home({ setRSContract, setUserSigner, setETHBalance, setEthAddress }) {
           );
           setRSContract(contract);
 
-          const balanceInUnits = await signer.getBalance("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-          const balance = ethers.utils.formatUnits(balanceInUnits, "18");
-          setETHBalance(balance);
+          // const balanceInUnits = await signer.getBalance("0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+          // const balance = ethers.utils.formatUnits(balanceInUnits, "18");
           navigate('./dashboard');
         } else {
           alert("Please switch network to zkSync!");
