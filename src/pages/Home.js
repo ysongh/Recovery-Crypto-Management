@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Container, Button } from '@mui/material';
 import Web3 from 'web3';
-import { Contract, Web3Provider, Provider } from "zksync-web3";
+import { Contract, Web3Provider } from "zksync-web3";
 import { ethers } from "ethers";
 
 import RecoverableSafeFactory from '../artifacts-zk/contracts/RecoverableSafeFactory.sol/RecoverableSafeFactory.json';
@@ -34,8 +34,6 @@ function Home({ setRSContract, setUserSigner, setETHBalance, setEthAddress }) {
     window.ethereum.request({ method: 'eth_requestAccounts' })
       .then(async () => {
         if (+window.ethereum.networkVersion == 280) {
-          const provider = new Provider('https://zksync2-testnet.zksync.dev');
-    
           // Note that we still need to get the Metamask signer
           const signer = (new Web3Provider(window.ethereum)).getSigner();
           setUserSigner(signer);
