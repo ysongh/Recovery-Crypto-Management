@@ -6,31 +6,37 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract RecoverableSafeFactory {
     RecoverableSafe[] public recoverableSafeList ;
+    mapping(address => address) public userSafeAddress;
 
     constructor() {}
 
     function createRecoverableSafe() public {
         RecoverableSafe newSafe = new RecoverableSafe(msg.sender);
         recoverableSafeList.push(newSafe);
+        userSafeAddress[msg.sender] = address(newSafe);
     }
 
-    function getTokenAllowance(uint _id, address _tokenAddress) public view returns (uint256) {
+    function getSafeContract() public view returns (address) {
+        return userSafeAddress[msg.sender];
+    }
+
+    function getTokenAllowance(address _tokenAddress) public view returns (uint256) {
         IERC20 token = IERC20(_tokenAddress);
-        return token.allowance(msg.sender, address(recoverableSafeList[_id]));
+        return token.allowance(msg.sender, userSafeAddress[msg.sender]);
     }
 
-    function approveTokenToSafe(uint _id, address _tokenAddress, uint _amount) public {
+    function approveTokenToSafe(address _tokenAddress, uint _amount) public {
         IERC20 token = IERC20(_tokenAddress);
-        token.approve(address(recoverableSafeList[_id]), _amount);
+        token.approve(userSafeAddress[msg.sender], _amount);
     }
 
-    function depositTokenToSafe(uint _id, address _tokenAddress, uint _amount) public {
+    function depositTokenToSafe(address _tokenAddress, uint _amount) public {
         IERC20 token = IERC20(_tokenAddress);
-        token.transferFrom(msg.sender, address(recoverableSafeList[_id]), _amount);
+        token.transferFrom(msg.sender, userSafeAddress[msg.sender], _amount);
     }
 
-    function withdrawTokenfromSafe(uint _id, address _tokenAddress, uint _amount) public {
-        RecoverableSafe safe = RecoverableSafe(address(recoverableSafeList[_id]));
+    function withdrawTokenfromSafe(address _tokenAddress, uint _amount) public {
+        RecoverableSafe safe = RecoverableSafe(userSafeAddress[msg.sender]);
         safe.withdrawTokenfromSafe(_amount, _tokenAddress);
     }
 }

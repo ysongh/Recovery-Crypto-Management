@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 import RecoverableSafeFactory from '../artifacts-zk/contracts/RecoverableSafeFactory.sol/RecoverableSafeFactory.json';
 import { connectCB } from '../config/coinbase-wallet';
 
-const RSF_CONTRACT_ADDRESS = "0x63b3F646e124F161AC3ff9C7AA4E35a8a3F733A4";
+const RSF_CONTRACT_ADDRESS = "0x3E8aE2d515e00085087497fd7FAf81cc26da6887";
 const RSF_CONTRACT_ABI = RecoverableSafeFactory.abi;
 
 function Home({ setRSContract, setUserSigner, setEthAddress }) {
