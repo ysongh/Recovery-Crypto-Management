@@ -3,7 +3,7 @@ import { Box, Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, L
 import { Provider } from "zksync-web3";
 import { ethers } from "ethers";
 
-import WalletTable from './safe-dashboard/WalletTable';
+import UserWallet from '../components/safe-dashboard/UserWallet';
 
 const provider = new Provider('https://zksync2-testnet.zksync.dev');
 const drawerWidth = 200;
@@ -56,9 +56,9 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
   }
 
   const getBalance = async () => {
-    const balance = await rsContract.getTokenAllowance("0", "0x5C221E77624690fff6dd741493D735a17716c26B");
-    console.log(balance.toString());
-    setSafeETHBalance(balance.toString());
+    const address = await rsContract.getSafeContract();
+    console.log(address);
+    setSafeETHBalance(address);
   }
 
   const createSafe = async () => {
@@ -133,7 +133,7 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
         <Toolbar />
         <p>ETH Address: {ethAddress}</p>
 
-        <WalletTable
+        <UserWallet
           userAssets={userAssets}
           userSigner={userSigner}
           getWalletBalance={getWalletBalance} />
