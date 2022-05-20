@@ -27,13 +27,16 @@ const TOKEN_ADDRESSES = [
 ];
 
 function SafeDashboard({ rsContract, ethAddress, userSigner }) {
-  const [safeETHBalance, setSafeETHBalance] = useState(0);
+  const [safeAddress, setSafeAddress] = useState("");
   
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [userAssets, setUserAssets] = useState([]);
 
   useEffect(() => {
-    getWalletBalance();
+    if(rsContract) {
+      getWalletBalance();
+      getSafeAddress();
+    }
   }, [rsContract])
   
   const getWalletBalance = async () => {
@@ -55,10 +58,9 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
     }
   }
 
-  const getBalance = async () => {
+  const getSafeAddress = async () => {
     const address = await rsContract.getSafeContract();
-    console.log(address);
-    setSafeETHBalance(address);
+    setSafeAddress(address);
   }
 
   const createSafe = async () => {
@@ -131,22 +133,25 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
         <Toolbar />
-        <p>ETH Address: {ethAddress}</p>
+        <p>Safe Address: {safeAddress}</p>
 
-        <UserWallet
-          userAssets={userAssets}
-          userSigner={userSigner}
-          getWalletBalance={getWalletBalance} />
+        {safeAddress === "0x0000000000000000000000000000000000000000"
+          ?  <Button variant="contained" onClick={createSafe} style={{ marginTop: '1rem'}}>
+              Create Safe
+            </Button>
+          : <>
+              <UserWallet
+                userAssets={userAssets}
+                userSigner={userSigner}
+                safeAddress={safeAddress}
+                getWalletBalance={getWalletBalance} />
+          </>}
 
-        <Button variant="contained" onClick={getBalance}>
-          Get balance
-        </Button>
-        <Button variant="contained" onClick={createSafe}>
-          Create Safe
-        </Button>
+        
+       
         <br />
         <br />
-        <p>Safe ETH balance: {safeETHBalance}</p>
+       
         <br />
         <input value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} />
         <Button variant="contained" onClick={withdrawToken}>

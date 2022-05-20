@@ -25,7 +25,7 @@ function WalletTable({ userAssets, handleClickOpen }) {
               <TableCell>{userAsset.balance}</TableCell>
               <TableCell>{userAsset.address}</TableCell>
               <TableCell>
-                <Button variant="outlined" onClick={handleClickOpen}>
+                <Button variant="outlined" onClick={() => handleClickOpen(userAsset.address)}>
                   Deposit
                 </Button></TableCell>
             </TableRow>

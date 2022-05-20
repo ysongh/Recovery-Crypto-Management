@@ -4,14 +4,15 @@ import { ethers } from "ethers";
 import WalletTable from '../WalletTable';
 import DepositDialog from '../DepositDialog';
 
-function UserWallet({ userAssets, userSigner, getWalletBalance }) {
+function UserWallet({ userAssets, userSigner, safeAddress, getWalletBalance }) {
   const [open, setOpen] = useState(false);
+  const [selectedToken, setSelectedToken] = useState("");
   const [depositAmount, setDepositAmount] = useState(0);
 
   const depositToSafe = async () => {
     const transferHandle = await userSigner.transfer({
-      to: "0xf5F2e25c091A8449cc41185937E0217151dcd7Ee",
-      token: "0x5C221E77624690fff6dd741493D735a17716c26B",
+      to: safeAddress,
+      token: selectedToken,
       amount: ethers.utils.parseEther(depositAmount),
       feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     });
@@ -21,7 +22,8 @@ function UserWallet({ userAssets, userSigner, getWalletBalance }) {
     setOpen(false);
   }
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (tokenAddress) => {
+    setSelectedToken(tokenAddress);
     setOpen(true);
   };
 
@@ -32,7 +34,7 @@ function UserWallet({ userAssets, userSigner, getWalletBalance }) {
 
   return (
     <div>
-      <WalletTable userAssets={userAssets} />
+      <WalletTable userAssets={userAssets} handleClickOpen={handleClickOpen}  />
       <DepositDialog
         open={open}
         onClose={handleClose}
