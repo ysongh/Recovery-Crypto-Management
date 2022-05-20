@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, DialogTitle, Dialog, TextField, Button } from '@mui/material';
 
-function DepositDialog({ onClose, open, depositAmount, setDepositAmount, depositToSafe }) {
+function ActionDialog({ onClose, open, amount, setAmount, action, type }) {
   const handleClose = () => {
     onClose();
   };
@@ -9,18 +9,18 @@ function DepositDialog({ onClose, open, depositAmount, setDepositAmount, deposit
   return (
     <Dialog onClose={handleClose} open={open}>
       <Container>
-        <DialogTitle>Deposit</DialogTitle>
+        <DialogTitle>{type}</DialogTitle>
         <TextField
           style={{ width: '500px' }}
           label="Amount"
           variant="outlined"
-          value={depositAmount}
-          onChange={(e) => setDepositAmount(e.target.value)}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
           size="small" />
          <br />
          <br />
-        <Button variant="contained" onClick={depositToSafe}>
-          Deposit
+        <Button variant="contained" onClick={action}>
+          {type}
         </Button>
         <br />
         <br />
@@ -29,4 +29,4 @@ function DepositDialog({ onClose, open, depositAmount, setDepositAmount, deposit
   );
 }
 
-export default DepositDialog;
+export default ActionDialog;

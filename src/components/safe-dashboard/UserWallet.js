@@ -1,19 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Provider } from "zksync-web3";
 import { ethers } from "ethers";
 
 import WalletTable from '../WalletTable';
-import DepositDialog from '../DepositDialog';
+import ActionDialog from '../ActionDialog';
+import { TOKEN_ADDRESSES } from '../../config/token-addresses';
 
-function UserWallet({ userAssets, userSigner, safeAddress, getWalletBalance }) {
+const provider = new Provider('https://zksync2-testnet.zksync.dev');
+
+function UserWallet({ userSigner, safeAddress }) {
   const [open, setOpen] = useState(false);
+  const [userAssets, setUserAssets] = useState([]);
   const [selectedToken, setSelectedToken] = useState("");
-  const [depositAmount, setDepositAmount] = useState(0);
+  const [amount, setAmount] = useState(0);
+
+  useEffect(() => {
+    if(userSigner) {
+      getWalletBalance();
+    }
+  }, [userSigner])
+
+  const getWalletBalance = async () => {
+    try{
+      const assets = [];
+      for(let i = 0; i < TOKEN_ADDRESSES.length; i++) {
+        const balanceInUnits = await provider.getBalance("0x4d7FB3b1F1dae456b814f2173aA64BaAfBd8f7ba", "latest", TOKEN_ADDRESSES[i].address);
+        const balance = ethers.utils.formatUnits(balanceInUnits, "18");
+        assets.push({
+          address: TOKEN_ADDRESSES[i].address,
+          symbol: TOKEN_ADDRESSES[i].symbol,
+          balance: balance
+        })
+      }
+
+      setUserAssets(assets);
+    } catch(error) {
+      console.error(error);
+    }
+  }
 
   const depositToSafe = async () => {
     const transferHandle = await userSigner.transfer({
       to: safeAddress,
       token: selectedToken,
-      amount: ethers.utils.parseEther(depositAmount),
+      amount: ethers.utils.parseEther(amount),
       feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     });
 
@@ -34,14 +64,18 @@ function UserWallet({ userAssets, userSigner, safeAddress, getWalletBalance }) {
 
   return (
     <div>
-      <WalletTable userAssets={userAssets} handleClickOpen={handleClickOpen}  />
-      <DepositDialog
+      <WalletTable
+        assets={userAssets}
+        handleClickOpen={handleClickOpen}
+        type="Deposit" />
+      <ActionDialog
         open={open}
         onClose={handleClose}
-        depositAmount={depositAmount}
-        setDepositAmount={setDepositAmount}
-        depositToSafe={depositToSafe}
-        handleClickOpen={handleClickOpen} />
+        amount={amount}
+        setAmount={setAmount}
+        action={depositToSafe}
+        handleClickOpen={handleClickOpen}
+        type="Deposit" />
     </div>
   )
 }

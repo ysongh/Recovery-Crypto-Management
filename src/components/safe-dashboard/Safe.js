@@ -3,29 +3,15 @@ import { ethers } from "ethers";
 import { Provider } from "zksync-web3";
 
 import WalletTable from '../WalletTable';
+import ActionDialog from '../ActionDialog';
+import { TOKEN_ADDRESSES } from '../../config/token-addresses';
 
 const provider = new Provider('https://zksync2-testnet.zksync.dev');
-const TOKEN_ADDRESSES = [
-  {
-    address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    symbol: "ETH"
-  },
-  {
-    address: "0xd35CCeEAD182dcee0F148EbaC9447DA2c4D449c4",
-    symbol: "USDC"
-  },
-  {
-    address: "0x5C221E77624690fff6dd741493D735a17716c26B",
-    symbol: "DAI"
-  },
-  {
-    address: "0xCA063A2AB07491eE991dCecb456D1265f842b568",
-    symbol: "wBTC"
-  }
-];
 
 function Safe({ safeAddress, rsContract }) {
-  const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [selectedToken, setSelectedToken] = useState("");
   const [safeAssets, setSafeAssets] = useState([]);
 
   useEffect(() => {
@@ -53,11 +39,9 @@ function Safe({ safeAddress, rsContract }) {
     }
   }
 
-  getSafeBalance();
-
   const withdrawToken = async () => {
     try {
-      const txHandle = await rsContract.withdrawTokenfromSafe("0", "0x5C221E77624690fff6dd741493D735a17716c26B", ethers.utils.parseEther(withdrawAmount), {
+      const txHandle = await rsContract.withdrawTokenfromSafe(selectedToken, ethers.utils.parseEther(amount), {
         customData: {
           // Passing the token to pay fee with
           feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
@@ -65,6 +49,7 @@ function Safe({ safeAddress, rsContract }) {
       });
   
       await txHandle.wait();
+      setOpen(false);
     }
     catch(error) {
       console.error(error);
@@ -72,14 +57,29 @@ function Safe({ safeAddress, rsContract }) {
     }
   }
 
+  const handleClickOpen = (tokenAddress) => {
+    setSelectedToken(tokenAddress);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <div>
-      <WalletTable userAssets={safeAssets} />
-      <input value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} />
-        <button variant="contained" onClick={withdrawToken}>
-          WithDraw
-        </button>
+      <WalletTable
+        assets={safeAssets}
+        handleClickOpen={handleClickOpen}
+        type="Withdraw" />
+      <ActionDialog
+        open={open}
+        onClose={handleClose}
+        amount={amount}
+        setAmount={setAmount}
+        action={withdrawToken}
+        handleClickOpen={handleClickOpen}
+        type="Withdraw" />
     </div>
   )
 }

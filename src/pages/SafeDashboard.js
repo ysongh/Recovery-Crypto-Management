@@ -6,57 +6,17 @@ import { ethers } from "ethers";
 import UserWallet from '../components/safe-dashboard/UserWallet';
 import Safe from '../components/safe-dashboard/Safe';
 
-const provider = new Provider('https://zksync2-testnet.zksync.dev');
 const drawerWidth = 200;
-const TOKEN_ADDRESSES = [
-  {
-    address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-    symbol: "ETH"
-  },
-  {
-    address: "0xd35CCeEAD182dcee0F148EbaC9447DA2c4D449c4",
-    symbol: "USDC"
-  },
-  {
-    address: "0x5C221E77624690fff6dd741493D735a17716c26B",
-    symbol: "DAI"
-  },
-  {
-    address: "0xCA063A2AB07491eE991dCecb456D1265f842b568",
-    symbol: "wBTC"
-  }
-];
 
 function SafeDashboard({ rsContract, ethAddress, userSigner }) {
   const [safeAddress, setSafeAddress] = useState("");
   const [currentSection, setCurrentSection] = useState("Your Wallet");
-  const [userAssets, setUserAssets] = useState([]);
 
   useEffect(() => {
     if(rsContract) {
       getSafeAddress();
-      getWalletBalance();
     }
   }, [rsContract])
-  
-  const getWalletBalance = async () => {
-    try{
-      const assets = [];
-      for(let i = 0; i < TOKEN_ADDRESSES.length; i++) {
-        const balanceInUnits = await provider.getBalance("0x4d7FB3b1F1dae456b814f2173aA64BaAfBd8f7ba", "latest", TOKEN_ADDRESSES[i].address);
-        const balance = ethers.utils.formatUnits(balanceInUnits, "18");
-        assets.push({
-          address: TOKEN_ADDRESSES[i].address,
-          symbol: TOKEN_ADDRESSES[i].symbol,
-          balance: balance
-        })
-      }
-
-      setUserAssets(assets);
-    } catch(error) {
-      console.error(error);
-    }
-  }
 
   const getSafeAddress = async () => {
     const address = await rsContract.getSafeContract();
@@ -125,10 +85,8 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
           : <>
               {currentSection === "Your Wallet"
                 && <UserWallet
-                  userAssets={userAssets}
                   userSigner={userSigner}
-                  safeAddress={safeAddress}
-                  getWalletBalance={getWalletBalance} /> }
+                  safeAddress={safeAddress} /> }
               {currentSection === "Your Safe"
                 && <Safe
                   safeAddress={safeAddress}

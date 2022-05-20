@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 
-function WalletTable({ userAssets, handleClickOpen }) {
+function WalletTable({ assets, handleClickOpen, type }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -14,19 +14,19 @@ function WalletTable({ userAssets, handleClickOpen }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {userAssets.map((userAsset) => (
+          {assets.map((asset) => (
             <TableRow
-              key={userAsset.address}
+              key={asset.address}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {userAsset.symbol}
+                {asset.symbol}
               </TableCell>
-              <TableCell>{userAsset.balance}</TableCell>
-              <TableCell>{userAsset.address}</TableCell>
+              <TableCell>{asset.balance}</TableCell>
+              <TableCell>{asset.address}</TableCell>
               <TableCell>
-                <Button variant="outlined" onClick={() => handleClickOpen(userAsset.address)}>
-                  Deposit
+                <Button variant="outlined" onClick={() => handleClickOpen(asset.address)}>
+                  {type}
                 </Button></TableCell>
             </TableRow>
           ))}
