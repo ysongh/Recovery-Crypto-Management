@@ -4,6 +4,7 @@ import { Provider } from "zksync-web3";
 import { ethers } from "ethers";
 
 import UserWallet from '../components/safe-dashboard/UserWallet';
+import Safe from '../components/safe-dashboard/Safe';
 
 const provider = new Provider('https://zksync2-testnet.zksync.dev');
 const drawerWidth = 200;
@@ -28,14 +29,13 @@ const TOKEN_ADDRESSES = [
 
 function SafeDashboard({ rsContract, ethAddress, userSigner }) {
   const [safeAddress, setSafeAddress] = useState("");
-  
-  const [withdrawAmount, setWithdrawAmount] = useState(0);
+  const [currentSection, setCurrentSection] = useState("Your Wallet");
   const [userAssets, setUserAssets] = useState([]);
 
   useEffect(() => {
     if(rsContract) {
-      getWalletBalance();
       getSafeAddress();
+      getWalletBalance();
     }
   }, [rsContract])
   
@@ -74,23 +74,6 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
     await txHandle.wait();
   }
 
-  const withdrawToken = async () => {
-    try {
-      const txHandle = await rsContract.withdrawTokenfromSafe("0", "0x5C221E77624690fff6dd741493D735a17716c26B", ethers.utils.parseEther(withdrawAmount), {
-        customData: {
-          // Passing the token to pay fee with
-          feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-        },
-      });
-  
-      await txHandle.wait();
-    }
-    catch(error) {
-      console.error(error);
-      console.log(error.transaction.value.toString());
-    }
-  }
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -120,9 +103,9 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
         <Divider />
         <List>
           {['Your Wallet', 'Your Safe'].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem key={index} disablePadding>
               <ListItemButton>
-                <ListItemText primary={text} />
+                <ListItemText primary={text} onClick={() => setCurrentSection(text)}/>
               </ListItemButton>
             </ListItem>
           ))}
@@ -140,23 +123,18 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
               Create Safe
             </Button>
           : <>
-              <UserWallet
-                userAssets={userAssets}
-                userSigner={userSigner}
-                safeAddress={safeAddress}
-                getWalletBalance={getWalletBalance} />
+              {currentSection === "Your Wallet"
+                && <UserWallet
+                  userAssets={userAssets}
+                  userSigner={userSigner}
+                  safeAddress={safeAddress}
+                  getWalletBalance={getWalletBalance} /> }
+              {currentSection === "Your Safe"
+                && <Safe
+                  safeAddress={safeAddress}
+                  rsContract={rsContract} />}
           </>}
-
         
-       
-        <br />
-        <br />
-       
-        <br />
-        <input value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} />
-        <Button variant="contained" onClick={withdrawToken}>
-          WithDraw
-        </Button>
       </Box>
     </Box>
   )
