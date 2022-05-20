@@ -28,7 +28,7 @@ const TOKEN_ADDRESSES = [
 
 function SafeDashboard({ rsContract, ethAddress, userSigner }) {
   const [safeETHBalance, setSafeETHBalance] = useState(0);
-  const [depositAmount, setDepositAmount] = useState(0);
+  
   const [withdrawAmount, setWithdrawAmount] = useState(0);
   const [userAssets, setUserAssets] = useState([]);
 
@@ -70,17 +70,6 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
     });
 
     await txHandle.wait();
-  }
-
-  const depositToSafe = async () => {
-    const transferHandle = userSigner.transfer({
-      to: "0xf5F2e25c091A8449cc41185937E0217151dcd7Ee",
-      token: "0x5C221E77624690fff6dd741493D735a17716c26B",
-      amount: ethers.utils.parseEther(depositAmount),
-      feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-    });
-
-    console.log(transferHandle);
   }
 
   const withdrawToken = async () => {
@@ -145,7 +134,9 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
         <p>ETH Address: {ethAddress}</p>
 
         <WalletTable
-          userAssets={userAssets} />
+          userAssets={userAssets}
+          userSigner={userSigner}
+          getWalletBalance={getWalletBalance} />
 
         <Button variant="contained" onClick={getBalance}>
           Get balance
@@ -156,10 +147,6 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
         <br />
         <br />
         <p>Safe ETH balance: {safeETHBalance}</p>
-        <input value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} />
-        <Button variant="contained" onClick={depositToSafe}>
-          Deposit
-        </Button>
         <br />
         <input value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} />
         <Button variant="contained" onClick={withdrawToken}>
