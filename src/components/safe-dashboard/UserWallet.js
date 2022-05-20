@@ -12,7 +12,8 @@ function UserWallet({ userSigner, safeAddress }) {
   const [open, setOpen] = useState(false);
   const [userAssets, setUserAssets] = useState([]);
   const [selectedToken, setSelectedToken] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [feeToken, setFeeToken] = useState("");
+  const [amount, setAmount] = useState("");
 
   useEffect(() => {
     if(userSigner) {
@@ -44,7 +45,7 @@ function UserWallet({ userSigner, safeAddress }) {
       to: safeAddress,
       token: selectedToken,
       amount: ethers.utils.parseEther(amount),
-      feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      feeToken: feeToken,
     });
 
     console.log(transferHandle);
@@ -75,6 +76,8 @@ function UserWallet({ userSigner, safeAddress }) {
         setAmount={setAmount}
         action={depositToSafe}
         handleClickOpen={handleClickOpen}
+        feeToken={feeToken}
+        setFeeToken={setFeeToken}
         type="Deposit" />
     </div>
   )

@@ -11,6 +11,7 @@ const provider = new Provider('https://zksync2-testnet.zksync.dev');
 function Safe({ safeAddress, rsContract }) {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
+  const [feeToken, setFeeToken] = useState("");
   const [selectedToken, setSelectedToken] = useState("");
   const [safeAssets, setSafeAssets] = useState([]);
 
@@ -44,7 +45,7 @@ function Safe({ safeAddress, rsContract }) {
       const txHandle = await rsContract.withdrawTokenfromSafe(selectedToken, ethers.utils.parseEther(amount), {
         customData: {
           // Passing the token to pay fee with
-          feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          feeToken: feeToken
         },
       });
   
@@ -79,6 +80,8 @@ function Safe({ safeAddress, rsContract }) {
         setAmount={setAmount}
         action={withdrawToken}
         handleClickOpen={handleClickOpen}
+        feeToken={feeToken}
+        setFeeToken={setFeeToken}
         type="Withdraw" />
     </div>
   )
