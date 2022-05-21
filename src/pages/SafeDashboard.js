@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { Box, Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, ListItem, ListItemText, ListItemButton, Button } from '@mui/material';
 import { Provider } from "zksync-web3";
 import { ethers } from "ethers";
@@ -9,6 +10,8 @@ import Safe from '../components/safe-dashboard/Safe';
 const drawerWidth = 200;
 
 function SafeDashboard({ rsContract, ethAddress, userSigner }) {
+  const navigate = useNavigate();
+
   const [safeAddress, setSafeAddress] = useState("");
   const [currentSection, setCurrentSection] = useState("Your Wallet");
 
@@ -34,6 +37,10 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
     await txHandle.wait();
   }
 
+  const disconnect = async () => {
+    navigate('/');
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -41,10 +48,13 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
         position="fixed"
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
       >
-        <Toolbar>
+        <Toolbar style={{ display: 'flex', justifyContent: 'space-between'}}>
           <Typography variant="h6" noWrap component="div">
             Recovery Crypto Management
           </Typography>
+          <Button variant="contained" color="secondary" onClick={disconnect}>
+            Disconnect
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
