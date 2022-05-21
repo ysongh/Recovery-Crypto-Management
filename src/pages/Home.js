@@ -43,12 +43,14 @@ function Home({ setRSContract, setUserSigner, setEthAddress }) {
 
   const connectMetaMask = async () => {
     window.ethereum.request({ method: 'eth_requestAccounts' })
-      .then(async () => {
+      .then(async accounts => {
         if (+window.ethereum.networkVersion == 280) {
+          setEthAddress(accounts[0]);
+
           // Note that we still need to get the Metamask signer
           const signer = (new Web3Provider(window.ethereum)).getSigner();
           setUserSigner(signer);
-
+          
           const contract = new Contract(
             RSF_CONTRACT_ADDRESS,
             RSF_CONTRACT_ABI,

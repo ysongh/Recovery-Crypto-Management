@@ -8,7 +8,7 @@ import { TOKEN_ADDRESSES } from '../../config/token-addresses';
 
 const provider = new Provider('https://zksync2-testnet.zksync.dev');
 
-function UserWallet({ userSigner, safeAddress }) {
+function UserWallet({ ethAddress, userSigner, safeAddress }) {
   const [open, setOpen] = useState(false);
   const [userAssets, setUserAssets] = useState([]);
   const [selectedToken, setSelectedToken] = useState("");
@@ -25,7 +25,7 @@ function UserWallet({ userSigner, safeAddress }) {
     try{
       const assets = [];
       for(let i = 0; i < TOKEN_ADDRESSES.length; i++) {
-        const balanceInUnits = await provider.getBalance("0x4d7FB3b1F1dae456b814f2173aA64BaAfBd8f7ba", "latest", TOKEN_ADDRESSES[i].address);
+        const balanceInUnits = await provider.getBalance(ethAddress, "latest", TOKEN_ADDRESSES[i].address);
         const balance = ethers.utils.formatUnits(balanceInUnits, "18");
         assets.push({
           address: TOKEN_ADDRESSES[i].address,

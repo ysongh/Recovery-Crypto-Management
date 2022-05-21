@@ -76,6 +76,7 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
         <Toolbar />
+        <p>Your Address: {ethAddress}</p>
         <p>Safe Address: {safeAddress}</p>
 
         {safeAddress === "0x0000000000000000000000000000000000000000"
@@ -85,6 +86,7 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
           : <>
               {currentSection === "Your Wallet"
                 && <UserWallet
+                  ethAddress={ethAddress}
                   userSigner={userSigner}
                   safeAddress={safeAddress} /> }
               {currentSection === "Your Safe"
