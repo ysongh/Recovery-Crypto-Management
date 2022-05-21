@@ -6,6 +6,7 @@ import SafeDashboard from './pages/SafeDashboard';
 
 function App() {
   const [ethAddress, setEthAddress] = useState("");
+  const [domainData, setDomainData] = useState('');
   const [userSigner, setUserSigner] = useState(""); 
   const [rsContract, setRSContract] = useState("");
 
@@ -17,6 +18,7 @@ function App() {
           element={
             <SafeDashboard
               ethAddress={ethAddress}
+              domainData={domainData}
               rsContract={rsContract}
               userSigner={userSigner} /> } />
         <Route
@@ -25,7 +27,8 @@ function App() {
             <Home
               setRSContract={setRSContract}
               setUserSigner={setUserSigner}
-              setEthAddress={setEthAddress} />} />
+              setEthAddress={setEthAddress}
+              setDomainData={setDomainData} />} />
       </Routes>
     </HashRouter>
   );

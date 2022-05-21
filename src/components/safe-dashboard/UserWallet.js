@@ -15,10 +15,10 @@ function UserWallet({ ethAddress, userSigner, userAssets, safeAddress, setUserAs
   const [amount, setAmount] = useState("");
 
   useEffect(() => {
-    if(userSigner) {
+    if(ethAddress) {
       getWalletBalance();
     }
-  }, [userSigner])
+  }, [ethAddress])
 
   const getWalletBalance = async () => {
     try{

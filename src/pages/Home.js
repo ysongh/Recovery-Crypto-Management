@@ -1,18 +1,38 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Container, Button } from '@mui/material';
 import Web3 from 'web3';
 import { Contract, Web3Provider } from "zksync-web3";
-import { ethers } from "ethers";
+import UAuth from '@uauth/js';
 
 import RecoverableSafeFactory from '../artifacts-zk/contracts/RecoverableSafeFactory.sol/RecoverableSafeFactory.json';
 import { connectCB } from '../config/coinbase-wallet';
+import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI } from '../config/api-keys';
 
 const RSF_CONTRACT_ADDRESS = "0x3E8aE2d515e00085087497fd7FAf81cc26da6887";
 const RSF_CONTRACT_ABI = RecoverableSafeFactory.abi;
 
-function Home({ setRSContract, setUserSigner, setEthAddress }) {
+const uauth = new UAuth({
+  clientID: UNSTOPPABLEDOMAINS_CLIENTID,
+  redirectUri: UNSTOPPABLEDOMAINS_REDIRECT_URI,
+});
+
+function Home({ setRSContract, setUserSigner, setEthAddress, setDomainData }) {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    uauth
+      .user()
+      .then(userData => {
+        console.log(userData);
+        setDomainData(userData);
+        setEthAddress(userData.wallet_address);
+        navigate('./dashboard');
+      })
+      .catch(error => {
+        console.error('profile error:', error);
+      })
+  }, [])
 
   const connectCoinbaseWallet = () => {
     const ethereum = connectCB();
@@ -68,7 +88,19 @@ function Home({ setRSContract, setUserSigner, setEthAddress }) {
       .catch((e) => console.log(e)); 
   }
 
-  
+  const loginWithUnstoppableDomains = async () => {
+    try {
+      const authorization = await uauth.loginWithPopup();
+      authorization.sub = authorization.idToken.sub;
+      console.log(authorization);
+
+      setDomainData(authorization);
+      setEthAddress(authorization.idToken.wallet_address);
+      navigate('./dashboard');
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <Container maxWidth="sm" style={{ display: 'flex', flexDirection: 'column'}}>
@@ -79,6 +111,10 @@ function Home({ setRSContract, setUserSigner, setEthAddress }) {
       <br />
       <Button variant="contained" onClick={connectCoinbaseWallet}>
         Connect With Coinbase Wallet
+      </Button>
+      <br />
+      <Button variant="contained" onClick={loginWithUnstoppableDomains}>
+        Connect With Unstoppable Domain
       </Button>
       <br />
       <Button variant="contained" onClick={connectMetaMask}>

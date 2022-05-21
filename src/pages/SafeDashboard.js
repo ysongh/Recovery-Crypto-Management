@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Box, Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, ListItem, ListItemText, ListItemButton, Button } from '@mui/material';
-import { Provider } from "zksync-web3";
-import { ethers } from "ethers";
+import UAuth from '@uauth/js';
 
 import UserWallet from '../components/safe-dashboard/UserWallet';
 import Safe from '../components/safe-dashboard/Safe';
+import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI } from '../config/api-keys';
 
 const drawerWidth = 200;
+const uauth = new UAuth({
+  clientID: UNSTOPPABLEDOMAINS_CLIENTID,
+  redirectUri: UNSTOPPABLEDOMAINS_REDIRECT_URI,
+});
 
-function SafeDashboard({ rsContract, ethAddress, userSigner }) {
+function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
   const navigate = useNavigate();
 
   const [safeAddress, setSafeAddress] = useState("");
@@ -39,6 +43,7 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
   }
 
   const disconnect = async () => {
+    await uauth.logout();
     navigate('/');
   }
 
@@ -53,9 +58,12 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
           <Typography variant="h6" noWrap component="div">
             Recovery Crypto Management
           </Typography>
-          <Button variant="contained" color="secondary" onClick={disconnect}>
-            Disconnect
-          </Button>
+          <div style={{ display: 'flex', alignItems: 'center'}}>
+            <p style={{ marginRight: '.7rem' }}>{domainData?.sub}</p>
+            <Button variant="contained" color="secondary" onClick={disconnect}>
+              Disconnect
+            </Button>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
