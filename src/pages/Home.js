@@ -22,12 +22,23 @@ function Home({ setRSContract, setUserSigner, setEthAddress }) {
       const accounts = response;
       console.log(`User's address is ${accounts[0]}`)
       setEthAddress(accounts[0]);
+
+      const provider = new Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      console.log(signer);
+
+      const contract = new Contract(
+        RSF_CONTRACT_ADDRESS,
+        RSF_CONTRACT_ABI,
+        signer
+      );
+
+      setRSContract(contract);
+      navigate('./dashboard');
     
       // Optionally, have the default account set for web3.js
       web3.eth.defaultAccount = accounts[0]
     })
-
-    console.log(web3);
   }
 
   const connectMetaMask = async () => {
