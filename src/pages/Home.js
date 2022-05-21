@@ -71,14 +71,18 @@ function Home({ setRSContract, setUserSigner, setEthAddress }) {
   
 
   return (
-    <Container maxWidth="lg">
-      <h1>Recovery Crypto Management</h1>
+    <Container maxWidth="sm" style={{ display: 'flex', flexDirection: 'column'}}>
+      <h1 style={{ marginTop: '10rem'}}>Recovery Crypto Management</h1>
+      <p style={{ marginBottom: '.5rem'}}>Store your Crypto on Recoverable Safe</p>
       
+      <hr />
+      <br />
       <Button variant="contained" onClick={connectCoinbaseWallet}>
-        Get Started
+        Connect With Coinbase Wallet
       </Button>
+      <br />
       <Button variant="contained" onClick={connectMetaMask}>
-        Connect Wallet
+        Connect With Metamask
       </Button>
     </Container>
   )
