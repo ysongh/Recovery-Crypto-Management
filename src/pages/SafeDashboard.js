@@ -13,6 +13,7 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
   const navigate = useNavigate();
 
   const [safeAddress, setSafeAddress] = useState("");
+  const [userAssets, setUserAssets] = useState([]);
   const [currentSection, setCurrentSection] = useState("Your Wallet");
 
   useEffect(() => {
@@ -98,10 +99,13 @@ function SafeDashboard({ rsContract, ethAddress, userSigner }) {
                 && <UserWallet
                   ethAddress={ethAddress}
                   userSigner={userSigner}
-                  safeAddress={safeAddress} /> }
+                  userAssets={userAssets}
+                  safeAddress={safeAddress}
+                  setUserAssets={setUserAssets} /> }
               {currentSection === "Your Safe"
                 && <Safe
                   safeAddress={safeAddress}
+                  userAssets={userAssets}
                   rsContract={rsContract} />}
           </>}
         

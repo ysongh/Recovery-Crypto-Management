@@ -8,9 +8,8 @@ import { TOKEN_ADDRESSES } from '../../config/token-addresses';
 
 const provider = new Provider('https://zksync2-testnet.zksync.dev');
 
-function UserWallet({ ethAddress, userSigner, safeAddress }) {
+function UserWallet({ ethAddress, userSigner, userAssets, safeAddress, setUserAssets }) {
   const [open, setOpen] = useState(false);
-  const [userAssets, setUserAssets] = useState([]);
   const [selectedToken, setSelectedToken] = useState("");
   const [feeToken, setFeeToken] = useState("");
   const [amount, setAmount] = useState("");
@@ -72,6 +71,7 @@ function UserWallet({ ethAddress, userSigner, safeAddress }) {
       <ActionDialog
         open={open}
         onClose={handleClose}
+        userAssets={userAssets}
         amount={amount}
         setAmount={setAmount}
         action={depositToSafe}

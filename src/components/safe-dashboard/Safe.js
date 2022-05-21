@@ -8,7 +8,7 @@ import { TOKEN_ADDRESSES } from '../../config/token-addresses';
 
 const provider = new Provider('https://zksync2-testnet.zksync.dev');
 
-function Safe({ safeAddress, rsContract }) {
+function Safe({ safeAddress, userAssets, rsContract }) {
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
   const [feeToken, setFeeToken] = useState("");
@@ -77,6 +77,7 @@ function Safe({ safeAddress, rsContract }) {
         open={open}
         onClose={handleClose}
         amount={amount}
+        userAssets={userAssets}
         setAmount={setAmount}
         action={withdrawToken}
         handleClickOpen={handleClickOpen}

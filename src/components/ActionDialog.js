@@ -3,7 +3,7 @@ import { Container, DialogTitle, Dialog, FormControl, InputLabel, TextField, Men
 
 import { TOKEN_ADDRESSES } from '../config/token-addresses';
 
-function ActionDialog({ onClose, open, amount, setAmount, action, feeToken, setFeeToken, type }) {
+function ActionDialog({ onClose, open, amount, userAssets, setAmount, action, feeToken, setFeeToken, type }) {
   const handleClose = () => {
     onClose();
   };
@@ -35,8 +35,8 @@ function ActionDialog({ onClose, open, amount, setAmount, action, feeToken, setF
             onChange={handleChange}
             size="small"
           >
-            {TOKEN_ADDRESSES.map(token => (
-              <MenuItem key={token.address} value={token.address}>{token.symbol}</MenuItem>
+            {userAssets.map(token => (
+              <MenuItem key={token.address} value={token.address}>{token.symbol} ({token.balance})</MenuItem>
             ))}
             
           </Select>
