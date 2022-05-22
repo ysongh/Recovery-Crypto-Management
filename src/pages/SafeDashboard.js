@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { Box, Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, ListItem, ListItemText, ListItemButton, Button } from '@mui/material';
+import { Box, Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, ListItem, ListItemIcon, ListItemText, ListItemButton, Button } from '@mui/material';
 import UAuth from '@uauth/js';
 
 import UserWallet from '../components/safe-dashboard/UserWallet';
@@ -8,8 +8,31 @@ import Safe from '../components/safe-dashboard/Safe';
 import Setting from '../components/safe-dashboard/Setting';
 import Recover from '../components/safe-dashboard/Recover';
 
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import SettingsIcon from '@mui/icons-material/Settings';
+import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
+
 import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI } from '../config/api-keys';
 
+const drawerLinks = [
+  {
+    "text": "Your Wallet",
+    "icon": <AccountBalanceWalletIcon />
+  },
+  {
+    "text": "Your Safe",
+    "icon": <InventoryIcon />
+  },
+  {
+    "text": "Setting",
+    "icon": <SettingsIcon />
+  },
+  {
+    "text": "Recover",
+    "icon": <DataSaverOnIcon />
+  }
+];
 const drawerWidth = 200;
 const uauth = new UAuth({
   clientID: UNSTOPPABLEDOMAINS_CLIENTID,
@@ -87,10 +110,13 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
         <Toolbar />
         <Divider />
         <List>
-          {['Your Wallet', 'Your Safe', 'Setting', 'Recover'].map((text, index) => (
+          {drawerLinks.map((d, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton>
-                <ListItemText primary={text} onClick={() => setCurrentSection(text)}/>
+                <ListItemIcon>
+                  {d.icon}
+                </ListItemIcon>
+                <ListItemText primary={d.text} onClick={() => setCurrentSection(d.text)}/>
               </ListItemButton>
             </ListItem>
           ))}
