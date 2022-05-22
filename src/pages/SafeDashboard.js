@@ -5,6 +5,8 @@ import UAuth from '@uauth/js';
 
 import UserWallet from '../components/safe-dashboard/UserWallet';
 import Safe from '../components/safe-dashboard/Safe';
+import Setting from '../components/safe-dashboard/Setting';
+
 import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI } from '../config/api-keys';
 
 const drawerWidth = 200;
@@ -81,7 +83,7 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
         <Toolbar />
         <Divider />
         <List>
-          {['Your Wallet', 'Your Safe'].map((text, index) => (
+          {['Your Wallet', 'Your Safe', 'Setting'].map((text, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemText primary={text} onClick={() => setCurrentSection(text)}/>
@@ -114,6 +116,9 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
                 && <Safe
                   safeAddress={safeAddress}
                   userAssets={userAssets}
+                  rsContract={rsContract} />}
+              {currentSection === "Setting"
+                && <Setting
                   rsContract={rsContract} />}
           </>}
         
