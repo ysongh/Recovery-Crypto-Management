@@ -6,6 +6,7 @@ import UAuth from '@uauth/js';
 import UserWallet from '../components/safe-dashboard/UserWallet';
 import Safe from '../components/safe-dashboard/Safe';
 import Setting from '../components/safe-dashboard/Setting';
+import Recover from '../components/safe-dashboard/Recover';
 
 import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI } from '../config/api-keys';
 
@@ -45,7 +46,10 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
   }
 
   const disconnect = async () => {
-    await uauth.logout();
+    if(domainData){
+      await uauth.logout();
+    }
+   
     navigate('/');
   }
 
@@ -83,7 +87,7 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
         <Toolbar />
         <Divider />
         <List>
-          {['Your Wallet', 'Your Safe', 'Setting'].map((text, index) => (
+          {['Your Wallet', 'Your Safe', 'Setting', 'Recover'].map((text, index) => (
             <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemText primary={text} onClick={() => setCurrentSection(text)}/>
@@ -101,27 +105,27 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
         <p>Safe Address: {safeAddress}</p>
 
         {safeAddress === "0x0000000000000000000000000000000000000000"
-          ?  <Button variant="contained" onClick={createSafe} style={{ marginTop: '1rem'}}>
+          && <Button variant="contained" onClick={createSafe} style={{ marginTop: '1rem'}}>
               Create Safe
-            </Button>
-          : <>
-              {currentSection === "Your Wallet"
-                && <UserWallet
-                  ethAddress={ethAddress}
-                  userSigner={userSigner}
-                  userAssets={userAssets}
-                  safeAddress={safeAddress}
-                  setUserAssets={setUserAssets} /> }
-              {currentSection === "Your Safe"
-                && <Safe
-                  safeAddress={safeAddress}
-                  userAssets={userAssets}
-                  rsContract={rsContract} />}
-              {currentSection === "Setting"
-                && <Setting
-                  rsContract={rsContract} />}
-          </>}
-        
+            </Button>}
+        {currentSection === "Your Wallet"
+            && <UserWallet
+              ethAddress={ethAddress}
+              userSigner={userSigner}
+              userAssets={userAssets}
+              safeAddress={safeAddress}
+              setUserAssets={setUserAssets} /> }
+          {currentSection === "Your Safe"
+            && <Safe
+              safeAddress={safeAddress}
+              userAssets={userAssets}
+              rsContract={rsContract} />}
+          {currentSection === "Setting"
+            && <Setting
+              rsContract={rsContract} />}
+          {currentSection === "Recover"
+            && <Recover
+              rsContract={rsContract} />}
       </Box>
     </Box>
   )
