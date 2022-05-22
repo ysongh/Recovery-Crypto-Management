@@ -39,4 +39,23 @@ contract RecoverableSafeFactory {
         RecoverableSafe safe = RecoverableSafe(userSafeAddress[msg.sender]);
         safe.withdrawTokenfromSafe(_amount, _tokenAddress);
     }
+
+    function getSafeBackupOwner() public view returns (address) {
+        RecoverableSafe safe = RecoverableSafe(userSafeAddress[msg.sender]);
+        return safe.backupOwner();
+    }
+
+    function setSafeBackupOwner(address _newBackupOwner) public {
+        RecoverableSafe safe = RecoverableSafe(userSafeAddress[msg.sender]);
+        safe.setBackupOwner(msg.sender, _newBackupOwner);
+    }
+
+    function changeSafeOwner(address _oldAddress) public {
+        RecoverableSafe safe = RecoverableSafe(userSafeAddress[_oldAddress]);
+        bool isChanged = safe.changeOwner(msg.sender);
+
+        if (isChanged == true) {
+            userSafeAddress[msg.sender] = address(safe);
+        }
+    }
 }
