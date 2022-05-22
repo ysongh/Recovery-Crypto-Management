@@ -120,6 +120,23 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
               </ListItemButton>
             </ListItem>
           ))}
+          <Divider />
+          <ListItem>
+            <div>
+              <ListItemText primary="ETH Address" />
+              <a href={`https://zksync2-testnet.zkscan.io/address/${ethAddress}`} target="_blank" rel="noopener noreferrer">
+                {ethAddress && ethAddress.substring(0,8) + "..." + ethAddress.substring(34,42)}
+              </a>
+            </div>
+          </ListItem>
+          <ListItem>
+            <div>
+              <ListItemText primary="Safe Address" />
+              <a href={`https://zksync2-testnet.zkscan.io/address/${safeAddress}`} target="_blank" rel="noopener noreferrer">
+                {safeAddress && safeAddress.substring(0,8) + "..." + safeAddress.substring(34,42)}
+              </a>
+            </div>
+          </ListItem>
         </List>
       </Drawer>
       <Box
@@ -127,8 +144,6 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
       >
         <Toolbar />
-        <p>Your Address: {ethAddress}</p>
-        <p>Safe Address: {safeAddress}</p>
 
         {safeAddress === "0x0000000000000000000000000000000000000000"
           && <Button variant="contained" onClick={createSafe} style={{ marginTop: '1rem'}}>

@@ -64,6 +64,7 @@ function UserWallet({ ethAddress, userSigner, userAssets, safeAddress, setUserAs
 
   return (
     <div>
+      <h1>Your Wallet</h1>
       <WalletTable
         assets={userAssets}
         handleClickOpen={handleClickOpen}

@@ -69,6 +69,7 @@ function Safe({ safeAddress, userAssets, rsContract }) {
 
   return (
     <div>
+      <h1>Your Safe</h1>
       <WalletTable
         assets={safeAssets}
         handleClickOpen={handleClickOpen}
