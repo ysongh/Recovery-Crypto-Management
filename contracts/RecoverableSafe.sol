@@ -23,7 +23,7 @@ contract RecoverableSafe {
 
     function withdrawTokenfromSafe(uint _tokenAmount, address _tokenAddress) public {
         IERC20 token = IERC20(_tokenAddress);
-        require(token.transfer(msg.sender, _tokenAmount), "Unable to transfer");    
+        require(token.transfer(owner, _tokenAmount), "Unable to transfer");    
     }
 
     function setBackupOwner(address _owner, address _newBackupOwner) public returns (bool) {

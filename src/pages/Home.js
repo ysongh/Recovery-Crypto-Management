@@ -9,7 +9,7 @@ import RecoverableSafeFactory from '../artifacts-zk/contracts/RecoverableSafeFac
 import { connectCB } from '../config/coinbase-wallet';
 import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI } from '../config/api-keys';
 
-const RSF_CONTRACT_ADDRESS = "0x965059d3F3929828ae351A04856a7F9AA26d20d7";
+const RSF_CONTRACT_ADDRESS = "0x96439287DeC615dB0a2ebef98910644D844948C3";
 const RSF_CONTRACT_ABI = RecoverableSafeFactory.abi;
 
 const uauth = new UAuth({
@@ -104,8 +104,8 @@ function Home({ setRSContract, setUserSigner, setEthAddress, setDomainData }) {
 
   return (
     <Container maxWidth="sm" style={{ display: 'flex', flexDirection: 'column'}}>
-      <h1 style={{ marginTop: '10rem'}}>Recovery Crypto Management</h1>
-      <p style={{ marginBottom: '.5rem'}}>Store your Crypto on Recoverable Safe</p>
+      <h1 style={{ marginTop: '10rem', marginBottom: '.3rem' }}>Recovery Crypto Management</h1>
+      <p style={{ marginBottom: '.5rem'}}>Store your Crypto on Recoverable Safe (zksync testnet)</p>
       
       <hr />
       <br />
