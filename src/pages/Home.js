@@ -7,9 +7,9 @@ import UAuth from '@uauth/js';
 
 import RecoverableSafeFactory from '../artifacts-zk/contracts/RecoverableSafeFactory.sol/RecoverableSafeFactory.json';
 import { connectCB } from '../config/coinbase-wallet';
-import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI } from '../config/api-keys';
+import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI, CONTRACT_ADDRESS } from '../config/api-keys';
 
-const RSF_CONTRACT_ADDRESS = "0x96439287DeC615dB0a2ebef98910644D844948C3";
+const RSF_CONTRACT_ADDRESS = CONTRACT_ADDRESS;
 const RSF_CONTRACT_ABI = RecoverableSafeFactory.abi;
 
 const uauth = new UAuth({
