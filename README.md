@@ -26,3 +26,6 @@ export const UNSTOPPABLEDOMAINS_REDIRECT_URI = <KEY>;
 export const CONTRACT_ADDRESS = <contract address from runing 'yarn hardhat deploy-zksync'>;
 ```
 - Run `yarn start` to start the dapp
+
+## Disclaimer
+These contracts are not audited.  Please review this code on your own before using any of the following code for production.  I will not be responsible or liable for all loss or damage caused from this project.
