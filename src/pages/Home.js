@@ -109,9 +109,9 @@ function Home({ setRSContract, setUserSigner, setEthAddress, setDomainData }) {
       
       <hr />
       <br />
-      <Button variant="contained" onClick={connectCoinbaseWallet}>
+      {/* <Button variant="contained" onClick={connectCoinbaseWallet}>
         Connect With Coinbase Wallet
-      </Button>
+      </Button> */}
       <br />
       <Button variant="contained" onClick={loginWithUnstoppableDomains}>
         Connect With Unstoppable Domain
