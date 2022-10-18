@@ -6,7 +6,6 @@ import { Contract, Web3Provider } from "zksync-web3";
 import UAuth from '@uauth/js';
 
 import RecoverableSafeFactory from '../artifacts-zk/contracts/RecoverableSafeFactory.sol/RecoverableSafeFactory.json';
-import { connectCB } from '../config/coinbase-wallet';
 import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI, CONTRACT_ADDRESS } from '../config/api-keys';
 
 const RSF_CONTRACT_ADDRESS = CONTRACT_ADDRESS;
@@ -33,33 +32,6 @@ function Home({ setRSContract, setUserSigner, setEthAddress, setDomainData }) {
         console.error('profile error:', error);
       })
   }, [])
-
-  const connectCoinbaseWallet = () => {
-    const ethereum = connectCB();
-    const web3 = new Web3(ethereum);
-
-    ethereum.request({ method: 'eth_requestAccounts' }).then(response => {
-      const accounts = response;
-      console.log(`User's address is ${accounts[0]}`)
-      setEthAddress(accounts[0]);
-
-      const provider = new Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      console.log(signer);
-
-      const contract = new Contract(
-        RSF_CONTRACT_ADDRESS,
-        RSF_CONTRACT_ABI,
-        signer
-      );
-
-      setRSContract(contract);
-      navigate('./dashboard');
-    
-      // Optionally, have the default account set for web3.js
-      web3.eth.defaultAccount = accounts[0]
-    })
-  }
 
   const connectMetaMask = async () => {
     window.ethereum.request({ method: 'eth_requestAccounts' })
@@ -108,10 +80,6 @@ function Home({ setRSContract, setUserSigner, setEthAddress, setDomainData }) {
       <p style={{ marginBottom: '.5rem'}}>Store your Crypto on Recoverable Safe (zksync testnet)</p>
       
       <hr />
-      <br />
-      {/* <Button variant="contained" onClick={connectCoinbaseWallet}>
-        Connect With Coinbase Wallet
-      </Button> */}
       <br />
       <Button variant="contained" onClick={loginWithUnstoppableDomains}>
         Connect With Unstoppable Domain

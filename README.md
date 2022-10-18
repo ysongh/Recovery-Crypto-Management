@@ -8,7 +8,6 @@ A Dapp where you can store your cryptos on the Recoverable Safe contract
 - zksync-web3
 - zkSync - I deployed the contract on zkSync Testnet for cheap gas fee and allow anyone to pay the gas fee with any tokens
 - Unstoppable Domains - Allow the user to login with Unstoppable
-- Coinbase Wallet - Allow the user to use coinbase wallet to sign transaction 
 
 ## Running the dapp on local host
 - Clone or download this repository
