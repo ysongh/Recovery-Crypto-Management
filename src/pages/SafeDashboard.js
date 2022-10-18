@@ -53,8 +53,13 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
   }, [rsContract])
 
   const getSafeAddress = async () => {
-    const address = await rsContract.getSafeContract();
-    setSafeAddress(address);
+    try{
+      const address = await rsContract.getSafeContract();
+      setSafeAddress(address);
+    } catch(err) {
+      console.error(err);
+    }
+   
   }
 
   const createSafe = async () => {
