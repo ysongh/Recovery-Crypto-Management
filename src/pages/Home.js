@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Container, Button } from '@mui/material';
-import Web3 from 'web3';
 import { Contract, Web3Provider } from "zksync-web3";
 import UAuth from '@uauth/js';
 

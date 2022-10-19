@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
 import { Box, Drawer, CssBaseline, AppBar, Toolbar, List, Typography, Divider, ListItem, ListItemIcon, ListItemText, ListItemButton, Button } from '@mui/material';
-import UAuth from '@uauth/js';
 
+import Navbar from '../components/safe-dashboard/Navbar';
 import UserWallet from '../components/safe-dashboard/UserWallet';
 import Safe from '../components/safe-dashboard/Safe';
 import Setting from '../components/safe-dashboard/Setting';
@@ -12,8 +11,6 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DataSaverOnIcon from '@mui/icons-material/DataSaverOn';
-
-import { UNSTOPPABLEDOMAINS_CLIENTID, UNSTOPPABLEDOMAINS_REDIRECT_URI } from '../config/api-keys';
 
 const drawerLinks = [
   {
@@ -34,14 +31,9 @@ const drawerLinks = [
   }
 ];
 const drawerWidth = 200;
-const uauth = new UAuth({
-  clientID: UNSTOPPABLEDOMAINS_CLIENTID,
-  redirectUri: UNSTOPPABLEDOMAINS_REDIRECT_URI,
-});
+
 
 function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
-  const navigate = useNavigate();
-
   const [safeAddress, setSafeAddress] = useState("");
   const [userAssets, setUserAssets] = useState([]);
   const [currentSection, setCurrentSection] = useState("Your Wallet");
@@ -73,33 +65,10 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
     await txHandle.wait();
   }
 
-  const disconnect = async () => {
-    if(domainData){
-      await uauth.logout();
-    }
-   
-    navigate('/');
-  }
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      >
-        <Toolbar style={{ display: 'flex', justifyContent: 'space-between'}}>
-          <Typography variant="h6" noWrap component="div">
-            Recovery Crypto Management
-          </Typography>
-          <div style={{ display: 'flex', alignItems: 'center'}}>
-            <p style={{ marginRight: '.7rem' }}>{domainData?.sub}</p>
-            <Button variant="contained" color="secondary" onClick={disconnect}>
-              Disconnect
-            </Button>
-          </div>
-        </Toolbar>
-      </AppBar>
+      <Navbar domainData={domainData} />
       <Drawer
         sx={{
           width: drawerWidth,
