@@ -45,11 +45,11 @@ function Sidebar({ ethAddress, safeAddress, setCurrentSection }) {
       <List>
         {drawerLinks.map((d, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => setCurrentSection(d.text)}>
               <ListItemIcon>
                 {d.icon}
               </ListItemIcon>
-              <ListItemText primary={d.text} onClick={() => setCurrentSection(d.text)}/>
+              <ListItemText primary={d.text} />
             </ListItemButton>
           </ListItem>
         ))}
