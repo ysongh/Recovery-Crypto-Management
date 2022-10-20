@@ -5,7 +5,7 @@ require('dotenv').config();
 
 module.exports = {
   zksolc: {
-    version: "0.1.0",
+    version: "1.2.0",
     compilerSource: "docker",
     settings: {
       optimizer: {
@@ -13,6 +13,7 @@ module.exports = {
       },
       experimental: {
         dockerImage: "matterlabs/zksolc",
+        tag: "v1.2.0"
       },
     },
   },
