@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, CssBaseline, Toolbar, Button } from '@mui/material';
 
-import Navbar from '../components/safe-dashboard/Navbar';
-import Sidebar from '../components/safe-dashboard/Sidebar';
+import Navbar from '../components/safe-dashboard/layout/Navbar';
+import Sidebar from '../components/safe-dashboard/layout/Sidebar';
 import UserWallet from '../components/safe-dashboard/UserWallet';
 import Safe from '../components/safe-dashboard/Safe';
 import Setting from '../components/safe-dashboard/Setting';
