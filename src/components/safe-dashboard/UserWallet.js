@@ -29,6 +29,7 @@ function UserWallet({ ethAddress, userSigner, userAssets, safeAddress, setUserAs
         assets.push({
           address: TOKEN_ADDRESSES[i].address,
           symbol: TOKEN_ADDRESSES[i].symbol,
+          decimal: TOKEN_ADDRESSES[i].decimal,
           balance: balance
         })
       }
