@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, DialogTitle, Dialog, FormControl, InputLabel, TextField, MenuItem, Select, Button } from '@mui/material';
 
-import { TOKEN_ADDRESSES } from '../config/token-addresses';
+import { TOKEN_ADDRESSES } from '../../config/token-addresses';
 
 function ActionDialog({ onClose, open, amount, userAssets, setAmount, action, feeToken, setFeeToken, type }) {
   const handleClose = () => {

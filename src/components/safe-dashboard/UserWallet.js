@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Provider } from "zksync-web3";
 import { ethers } from "ethers";
 
-import WalletTable from '../WalletTable';
-import ActionDialog from '../ActionDialog';
+import WalletTable from '../common/WalletTable';
+import ActionDialog from '../common/ActionDialog';
 import { TOKEN_ADDRESSES } from '../../config/token-addresses';
 
 const provider = new Provider('https://zksync2-testnet.zksync.dev');
