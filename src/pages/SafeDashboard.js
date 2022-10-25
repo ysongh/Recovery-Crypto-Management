@@ -48,6 +48,7 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
       <Sidebar
         ethAddress={ethAddress}
         safeAddress={safeAddress}
+        currentSection={currentSection}
         setCurrentSection={setCurrentSection} />
 
       <Box

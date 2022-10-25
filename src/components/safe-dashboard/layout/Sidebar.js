@@ -26,7 +26,7 @@ const drawerLinks = [
 ];
 const drawerWidth = 200;
 
-function Sidebar({ ethAddress, safeAddress, setCurrentSection }) {
+function Sidebar({ ethAddress, safeAddress, currentSection, setCurrentSection }) {
   return (
     <Drawer
       sx={{
@@ -45,7 +45,7 @@ function Sidebar({ ethAddress, safeAddress, setCurrentSection }) {
       <List>
         {drawerLinks.map((d, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton onClick={() => setCurrentSection(d.text)}>
+            <ListItemButton className={d.text === currentSection && "gray"} onClick={() => setCurrentSection(d.text)}>
               <ListItemIcon>
                 {d.icon}
               </ListItemIcon>
