@@ -25,11 +25,10 @@ function UserWallet({ ethAddress, userSigner, userAssets, safeAddress, setUserAs
       const assets = [];
       for(let i = 0; i < TOKEN_ADDRESSES.length; i++) {
         const balanceInUnits = await provider.getBalance(ethAddress, "latest", TOKEN_ADDRESSES[i].address);
-        const balance = ethers.utils.formatUnits(balanceInUnits, "18");
+        const balance = ethers.utils.formatUnits(balanceInUnits, TOKEN_ADDRESSES[i].decimal);
         assets.push({
           address: TOKEN_ADDRESSES[i].address,
           symbol: TOKEN_ADDRESSES[i].symbol,
-          decimal: TOKEN_ADDRESSES[i].decimal,
           balance: balance
         })
       }

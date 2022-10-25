@@ -2,7 +2,6 @@ import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 
 function WalletTable({ assets, handleClickOpen, type }) {
-  console.log("a", assets)
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -23,7 +22,7 @@ function WalletTable({ assets, handleClickOpen, type }) {
               <TableCell component="th" scope="row">
                 {asset.symbol}
               </TableCell>
-              <TableCell>{asset.balance * 10 ** asset.decimal}</TableCell>
+              <TableCell>{asset.balance}</TableCell>
               <TableCell>{asset.address}</TableCell>
               <TableCell>
                 <Button variant="outlined" onClick={() => handleClickOpen(asset.address)}>
