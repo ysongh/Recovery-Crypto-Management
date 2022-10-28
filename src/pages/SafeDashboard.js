@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, CssBaseline, Toolbar, Button } from '@mui/material';
+import { Box, CssBaseline, Toolbar } from '@mui/material';
 
 import Navbar from '../components/safe-dashboard/layout/Navbar';
 import Sidebar from '../components/safe-dashboard/layout/Sidebar';
@@ -29,17 +29,6 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
    
   }
 
-  const createSafe = async () => {
-    const txHandle = await rsContract.createRecoverableSafe({
-      customData: {
-        // Passing the token to pay fee with
-        feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      },
-    });
-
-    await txHandle.wait();
-  }
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -57,10 +46,6 @@ function SafeDashboard({ rsContract, domainData, ethAddress, userSigner }) {
       >
         <Toolbar />
 
-        {safeAddress === "0x0000000000000000000000000000000000000000"
-          && <Button variant="contained" onClick={createSafe} style={{ marginTop: '1rem'}}>
-              Create Safe
-            </Button>}
         {currentSection === "Your Wallet"
             && <UserWallet
               ethAddress={ethAddress}

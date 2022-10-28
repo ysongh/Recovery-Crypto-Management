@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
 import { ethers } from "ethers";
 import { Provider } from "zksync-web3";
 
@@ -41,6 +42,17 @@ function Safe({ safeAddress, userAssets, rsContract }) {
     }
   }
 
+  const createSafe = async () => {
+    const txHandle = await rsContract.createRecoverableSafe({
+      customData: {
+        // Passing the token to pay fee with
+        feeToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      },
+    });
+
+    await txHandle.wait();
+  }
+
   const withdrawToken = async () => {
     try {
       const txHandle = await rsContract.withdrawTokenfromSafe(selectedToken, ethers.utils.parseEther(amount), {
@@ -71,10 +83,16 @@ function Safe({ safeAddress, userAssets, rsContract }) {
   return (
     <div>
       <h1>Your Safe</h1>
-      <WalletTable
+      {safeAddress === "0x0000000000000000000000000000000000000000"
+        ? <Button variant="contained" onClick={createSafe} style={{ marginTop: '1rem'}}>
+            Create Safe
+          </Button>
+        : <WalletTable
         assets={safeAssets}
         handleClickOpen={handleClickOpen}
         type="Withdraw" />
+      }
+      
       <ActionDialog
         open={open}
         onClose={handleClose}
