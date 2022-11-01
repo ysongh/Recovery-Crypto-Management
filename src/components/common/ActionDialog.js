@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, DialogTitle, Dialog, FormControl, InputLabel, TextField, MenuItem, Select, Button } from '@mui/material';
+import { Container, Dialog, FormControl, InputLabel, TextField, MenuItem, Select, Button } from '@mui/material';
 
 import { TOKEN_ADDRESSES } from '../../config/token-addresses';
 
@@ -14,18 +14,18 @@ function ActionDialog({ onClose, open, amount, userAssets, setAmount, action, fe
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <Container>
-        <DialogTitle>{type} Token</DialogTitle>
+      <Container style={{ minWidth: '500px' }}>
+        <h2 style={{ margin: '1rem 0 .5rem 0' }}>{type} Token</h2>
         <TextField
-          style={{ width: '500px' }}
           label="Amount"
-          variant="outlined"
+          variant="filled"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
+          fullWidth
           size="small" />
          <br />
          <br />
-         <FormControl fullWidth>
+         <FormControl variant="filled" fullWidth>
           <InputLabel id="feelabel">Pay Fee With</InputLabel>
           <Select
             labelId="feelabel"
