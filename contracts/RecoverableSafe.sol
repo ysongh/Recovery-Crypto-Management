@@ -23,12 +23,6 @@ contract RecoverableSafe {
         return address(this).balance;
     }
 
-    // Todo: change msg.sender to address that is pass from RecoverableSafeFactory to make this function work
-    // function depositTokenToSafe(uint _tokenAmount, address _tokenAddress) public {
-    //     IERC20 token = IERC20(_tokenAddress);
-    //     token.transferFrom(msg.sender, address(this), _tokenAmount);
-    // }
-
     function withdrawTokenfromSafe(uint _tokenAmount, address _tokenAddress) public {
         IERC20 token = IERC20(_tokenAddress);
         require(token.transfer(owner, _tokenAmount), "Unable to transfer");    
