@@ -42,6 +42,23 @@ function Sidebar({ ethAddress, safeAddress, currentSection, setCurrentSection })
     >
       <Toolbar />
       <Divider />
+      <ListItem>
+        <div>
+          <ListItemText primary="ETH Address" />
+          <a href={`https://zksync2-testnet.zkscan.io/address/${ethAddress}`} target="_blank" rel="noopener noreferrer">
+            {ethAddress && ethAddress.substring(0,8) + "..." + ethAddress.substring(34,42)}
+          </a>
+        </div>
+      </ListItem>
+      <ListItem>
+        <div>
+          <ListItemText primary="Safe Address" />
+          <a href={`https://zksync2-testnet.zkscan.io/address/${safeAddress}`} target="_blank" rel="noopener noreferrer">
+            {safeAddress && safeAddress.substring(0,8) + "..." + safeAddress.substring(34,42)}
+          </a>
+        </div>
+      </ListItem>
+      <Divider />
       <List>
         {drawerLinks.map((d, index) => (
           <ListItem key={index} disablePadding>
@@ -53,23 +70,6 @@ function Sidebar({ ethAddress, safeAddress, currentSection, setCurrentSection })
             </ListItemButton>
           </ListItem>
         ))}
-        <Divider />
-        <ListItem>
-          <div>
-            <ListItemText primary="ETH Address" />
-            <a href={`https://zksync2-testnet.zkscan.io/address/${ethAddress}`} target="_blank" rel="noopener noreferrer">
-              {ethAddress && ethAddress.substring(0,8) + "..." + ethAddress.substring(34,42)}
-            </a>
-          </div>
-        </ListItem>
-        <ListItem>
-          <div>
-            <ListItemText primary="Safe Address" />
-            <a href={`https://zksync2-testnet.zkscan.io/address/${safeAddress}`} target="_blank" rel="noopener noreferrer">
-              {safeAddress && safeAddress.substring(0,8) + "..." + safeAddress.substring(34,42)}
-            </a>
-          </div>
-        </ListItem>
       </List>
     </Drawer>
   )
