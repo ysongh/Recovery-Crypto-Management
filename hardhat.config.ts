@@ -1,5 +1,6 @@
 require("@matterlabs/hardhat-zksync-deploy");
 require("@matterlabs/hardhat-zksync-solc");
+require("@nomiclabs/hardhat-waffle");
 
 require('dotenv').config();
 
