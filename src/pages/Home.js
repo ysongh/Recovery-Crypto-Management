@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { Container, Button } from '@mui/material';
+import { Container, Card, CardContent, Button } from '@mui/material';
 import { Contract, Web3Provider } from "zksync-web3";
 import UAuth from '@uauth/js';
 
@@ -75,18 +75,23 @@ function Home({ setRSContract, setUserSigner, setEthAddress, setDomainData }) {
 
   return (
     <Container maxWidth="sm" style={{ display: 'flex', flexDirection: 'column'}}>
-      <h1 style={{ marginTop: '10rem', marginBottom: '.3rem' }}>Recovery Crypto Management</h1>
-      <p style={{ marginBottom: '.5rem'}}>Store your Crypto on Recoverable Safe (zksync testnet)</p>
-      
-      <hr />
-      <br />
-      <Button variant="contained" onClick={loginWithUnstoppableDomains}>
-        Connect With Unstoppable Domain
-      </Button>
-      <br />
-      <Button variant="contained" onClick={connectMetaMask}>
-        Connect With Metamask
-      </Button>
+      <Card style={{ marginTop: '10rem' }}>
+        <CardContent>
+          <h1 style={{ marginBottom: '.3rem' }}>Recovery Crypto Management</h1>
+          <p style={{ marginBottom: '.5rem'}}>Store your Crypto on Recoverable Safe (zksync testnet)</p>
+          
+          <hr />
+          <br />
+          <Button variant="contained" onClick={loginWithUnstoppableDomains} fullWidth>
+            Connect With Unstoppable Domain
+          </Button>
+          <br />
+          <br />
+          <Button variant="contained" onClick={connectMetaMask} fullWidth>
+            Connect With Metamask
+          </Button>
+        </CardContent>
+      </Card>
     </Container>
   )
 }
